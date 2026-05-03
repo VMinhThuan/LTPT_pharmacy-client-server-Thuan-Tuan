@@ -1,0 +1,89 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+javafx {
+    version = "21.0.5"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
+}
+
+group 'iuh.fit'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.11.0'
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(JavaExec).configureEach {
+    doFirst {
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            jvmArgs += ['-XstartOnFirstThread']
+        }
+        def javafxJars = classpath.filter { File f -> f.name.startsWith("javafx-") }
+        if (!javafxJars.isEmpty()) {
+            jvmArgs += ['--module-path', javafxJars.asPath]
+            jvmArgs += ['--add-modules', 'javafx.controls,javafx.fxml,javafx.swing']
+        }
+    }
+}
+
+tasks.register('runDashboard', JavaExec) {
+    group = 'application'
+    description = 'Run JavaFX MainDashboard with macOS-safe JVM args'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'client.ui.MainDashboardLauncher'
+}
+
+tasks.register('runLogin', JavaExec) {
+    group = 'application'
+    description = 'Run JavaFX LoginUI with macOS-safe JVM args'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'client.ui.LoginUILauncher'
+}
+
+tasks.register('runServer', JavaExec) {
+    group = 'application'
+    description = 'Run RMI server'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'server.RMIServer'
+}
+
+dependencies {
+    implementation('org.hibernate:hibernate-core:7.0.0.Beta1')
+    implementation('org.glassfish.jaxb:jaxb-runtime:4.0.5')
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.1'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+    // https://mvnrepository.com/artifact/net.datafaker/datafaker
+    implementation 'net.datafaker:datafaker:2.2.0'
+
+    // Barcode & Webcam (Apple Silicon compatible)
+    implementation 'org.bytedeco:javacv-platform:1.5.10'
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:javase:3.5.3'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.31'
+    implementation 'org.mindrot:jbcrypt:0.4'
+}
+
+test {
+    useJUnitPlatform()
+}
