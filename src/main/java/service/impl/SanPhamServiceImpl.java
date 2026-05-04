@@ -154,7 +154,7 @@ public class SanPhamServiceImpl extends GenericServiceImpl<SanPham, String> impl
     private Map<String, Integer> computeStockByBranch(EntityManager em, String chiNhanh) {
         String branchWhere;
         if (chiNhanh == null || chiNhanh.equalsIgnoreCase("Kho tổng") || chiNhanh.equalsIgnoreCase("Trụ sở chính")) {
-            branchWhere = "WHERE (ct.%1$s.chiNhanh IS NULL OR LOWER(TRIM(ct.%1$s.chiNhanh)) = 'trụ sở chính')";
+            branchWhere = ""; // No filtering = Global Total
         } else {
             branchWhere = "WHERE LOWER(TRIM(ct.%1$s.chiNhanh)) = LOWER(TRIM(:chiNhanh))";
         }
