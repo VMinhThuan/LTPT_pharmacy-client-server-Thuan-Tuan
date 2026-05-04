@@ -14,7 +14,7 @@ public class RMIServer {
         try {
             int port = Integer.parseInt(System.getenv().getOrDefault("RMI_PORT", String.valueOf(DEFAULT_PORT)));
             String host = System.getProperty("RMI_HOST",
-                    System.getenv().getOrDefault("RMI_HOST", "127.0.0.1"));
+                    System.getenv().getOrDefault("RMI_HOST", "172.20.10.7"));
             System.setProperty("java.rmi.server.hostname", host);
 
             Registry registry;

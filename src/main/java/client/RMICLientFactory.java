@@ -6,7 +6,7 @@ import java.rmi.Naming;
 
 public class RMICLientFactory {
     private static final String HOST = System.getProperty("RMI_HOST",
-            System.getenv().getOrDefault("RMI_HOST", "127.0.0.1"));
+            System.getenv().getOrDefault("RMI_HOST", "172.20.10.7"));
     private static final int PORT = Integer.parseInt(System.getProperty("RMI_PORT",
             System.getenv().getOrDefault("RMI_PORT", "1099")));
 
