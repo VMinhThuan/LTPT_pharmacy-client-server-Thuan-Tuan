@@ -1931,7 +1931,8 @@ public class MainDashboard extends Application {
                             currentProductViewBranch = loggedInAccount.getNhanVien().getChiNhanh();
                             return RMICLientFactory.getSanPhamService().getAllByChiNhanh(currentProductViewBranch);
                         }
-                        return RMICLientFactory.getSanPhamService().getAll();
+                        // Default for guest or when login is lost
+                        return RMICLientFactory.getSanPhamService().getAllByChiNhanh(null);
                     }
                     catch (Exception e) { throw new RuntimeException(e); }
                 })
