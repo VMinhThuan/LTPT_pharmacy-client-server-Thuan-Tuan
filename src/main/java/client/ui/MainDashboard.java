@@ -1920,7 +1920,9 @@ public class MainDashboard extends Application {
                     try {
                         if (loggedInAccount != null && loggedInAccount.getVaiTro() == VaiTro.ADMIN) {
                             String branch = currentProductViewBranch;
-                            if ("Kho tổng".equalsIgnoreCase(branch)) branch = null;
+                            if (branch == null || "Kho tổng".equalsIgnoreCase(branch) || "Trụ sở chính".equalsIgnoreCase(branch)) {
+                                branch = null;
+                            }
                             return RMICLientFactory.getSanPhamService().getAllByChiNhanh(branch);
                         }
                         if (loggedInAccount != null
